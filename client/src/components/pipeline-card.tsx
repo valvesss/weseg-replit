@@ -100,14 +100,14 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
                     className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center"
                   >
                     <Paperclip className="w-4 h-4 mr-2" />
-                    Attach Document
+                    Anexar Documento
                   </button>
                   <button 
                     onClick={handleDeleteCard}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete Card
+                    Excluir Card
                   </button>
                 </div>
               </div>
@@ -125,8 +125,8 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
           
           <div className="flex items-center justify-between pt-2 border-t border-slate-200">
             <div className="flex items-center text-slate-800">
-              <span className="text-lg font-bold">
-                {premium > 0 ? formatCurrency(premium).replace('.00', '') : 'R$ 230,00'}
+              <span className="text-sm font-bold">
+                {premium > 0 ? formatCurrency(premium) : formatCurrency(230)}
               </span>
             </div>
             

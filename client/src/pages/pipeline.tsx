@@ -139,7 +139,7 @@ export default function Pipeline() {
                   <DollarSign className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Total Pipeline</p>
+                  <p className="text-sm font-medium text-slate-600">Pipeline Total</p>
                   <p className="text-2xl font-bold text-slate-900">{formatCurrency(totalPipelineValue)}</p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function Pipeline() {
                   <Users className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Total Leads</p>
+                  <p className="text-sm font-medium text-slate-600">Total de Leads</p>
                   <p className="text-2xl font-bold text-slate-900">{leads.length}</p>
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function Pipeline() {
                   <TrendingUp className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Avg Deal Value</p>
+                  <p className="text-sm font-medium text-slate-600">Valor Médio</p>
                   <p className="text-2xl font-bold text-slate-900">{formatCurrency(averageDealValue)}</p>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function Pipeline() {
                   <TrendingUp className="w-6 h-6 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Conversion Rate</p>
+                  <p className="text-sm font-medium text-slate-600">Taxa de Conversão</p>
                   <p className="text-2xl font-bold text-slate-900">{conversionRate.toFixed(1)}%</p>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function Pipeline() {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input
-              placeholder="Search leads by name, email, or insurance type..."
+              placeholder="Buscar por nome, email ou tipo de seguro..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -205,10 +205,10 @@ export default function Pipeline() {
             <Filter className="w-4 h-4 text-slate-500" />
             <Select value={insuranceFilter} onValueChange={setInsuranceFilter}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder="Insurance Type" />
+                <SelectValue placeholder="Tipo de Seguro" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="all">Todos os Tipos</SelectItem>
                 {uniqueInsuranceTypes.map((type) => (
                   <SelectItem key={type} value={type}>
                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -217,30 +217,16 @@ export default function Pipeline() {
               </SelectContent>
             </Select>
             
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-36">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="leads">Contato</SelectItem>
-                <SelectItem value="qualified">Negociação</SelectItem>
-                <SelectItem value="proposal">Fechamento</SelectItem>
-                <SelectItem value="closed">Finalizado</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            {(searchQuery || insuranceFilter !== "all" || statusFilter !== "all") && (
+            {(searchQuery || insuranceFilter !== "all") && (
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => {
                   setSearchQuery("");
                   setInsuranceFilter("all");
-                  setStatusFilter("all");
                 }}
               >
-                Clear
+                Limpar
               </Button>
             )}
           </div>
