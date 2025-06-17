@@ -113,21 +113,23 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             </h3>
           </div>
           <div className="flex items-center space-x-1">
-            {/* Menu button (moved to left) */}
+            {/* Attach button */}
+            <button 
+              onClick={handleAttachDocument}
+              className="text-slate-400 hover:text-slate-600 transition-colors"
+              title="Anexar Documento"
+            >
+              <Paperclip className="w-4 h-4" />
+            </button>
+            
+            {/* Menu button */}
             <div className="relative group">
               <button className="text-slate-400 hover:text-slate-600 transition-colors">
                 <MoreVertical className="w-4 h-4" />
               </button>
               {/* Dropdown Menu */}
-              <div className="absolute left-0 top-6 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+              <div className="absolute right-0 top-6 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                 <div className="py-1">
-                  <button 
-                    onClick={handleAttachDocument}
-                    className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center"
-                  >
-                    <Paperclip className="w-4 h-4 mr-2" />
-                    Anexar Documento
-                  </button>
                   <button 
                     onClick={handleDeleteCard}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"

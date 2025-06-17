@@ -3,13 +3,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PipelineCard } from "@/components/pipeline-card";
 import { useState } from "react";
 import { Plus, Search, TrendingUp, Users, DollarSign, Filter } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { apiRequest } from "@/lib/queryClient";
-import type { PipelineLead } from "@shared/schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import type { PipelineLead, InsertPipelineLead } from "@shared/schema";
+import { insertPipelineLeadSchema } from "@shared/schema";
+import { z } from "zod";
 
 const statusColumns = [
   { key: "leads", title: "Contato", bgColor: "bg-red-100", badgeColor: "bg-red-500", headerColor: "bg-red-200" },
@@ -18,11 +25,19 @@ const statusColumns = [
   { key: "closed", title: "Finalizado", bgColor: "bg-green-100", badgeColor: "bg-green-500", headerColor: "bg-green-200" },
 ];
 
+const addCardSchema = insertPipelineLeadSchema.extend({
+  annualPremium: z.string().min(1, "Valor anual é obrigatório"),
+});
+
+type AddCardFormData = z.infer<typeof addCardSchema>;
+
 export default function Pipeline() {
   const [draggedLead, setDraggedLead] = useState<PipelineLead | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [insuranceFilter, setInsuranceFilter] = useState<string>("all");
+  const [isAddCardOpen, setIsAddCardOpen] = useState(false);
+  const [addCardStatus, setAddCardStatus] = useState<string>("leads");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const queryClient = useQueryClient();
 
@@ -37,6 +52,43 @@ export default function Pipeline() {
       queryClient.invalidateQueries({ queryKey: ["/api/pipeline-leads"] });
     },
   });
+
+  const addLeadMutation = useMutation({
+    mutationFn: (data: InsertPipelineLead) =>
+      apiRequest("POST", "/api/pipeline-leads", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/pipeline-leads"] });
+      setIsAddCardOpen(false);
+      form.reset();
+    },
+  });
+
+  const form = useForm<AddCardFormData>({
+    resolver: zodResolver(addCardSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      insuranceType: "auto",
+      annualPremium: "",
+      status: "leads",
+    },
+  });
+
+  const onAddCardSubmit = (data: AddCardFormData) => {
+    const leadData: InsertPipelineLead = {
+      ...data,
+      annualPremium: parseFloat(data.annualPremium),
+      status: addCardStatus,
+    };
+    addLeadMutation.mutate(leadData);
+  };
+
+  const handleAddCard = (status: string) => {
+    setAddCardStatus(status);
+    form.setValue("status", status);
+    setIsAddCardOpen(true);
+  };
 
   const handleDragStart = (e: React.DragEvent, lead: PipelineLead) => {
     setDraggedLead(lead);
@@ -270,7 +322,10 @@ export default function Pipeline() {
                     {/* Dropdown Menu */}
                     <div className="absolute right-0 top-8 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                       <div className="py-1">
-                        <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
+                        <button 
+                          onClick={() => handleAddCard(column.key)}
+                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center"
+                        >
                           <Plus className="w-4 h-4 mr-2" />
                           Adicionar Novo Card
                         </button>
