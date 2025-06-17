@@ -123,15 +123,17 @@ export default function Pipeline() {
             >
               <div className={cn("rounded-t-xl p-4", column.headerColor)}>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <h4 className="font-semibold text-slate-800">{column.title}</h4>
-                    <span className={cn(
-                      "text-white text-sm px-3 py-1 rounded-full font-medium",
-                      column.badgeColor
-                    )}>
-                      {columnLeads.length}
-                    </span>
-                    <span className="text-sm font-semibold text-slate-700">{formatCurrency(columnValue)}</span>
+                  <div>
+                    <div className="flex items-center space-x-3">
+                      <h4 className="font-semibold text-slate-800">{column.title}</h4>
+                      <span className={cn(
+                        "text-white text-sm px-3 py-1 rounded-full font-medium",
+                        column.badgeColor
+                      )}>
+                        {columnLeads.length}
+                      </span>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-700 mt-1">{formatCurrency(columnValue)}</p>
                   </div>
                   <div className="flex items-center space-x-1 relative group">
                     <div className="w-8 h-8 text-slate-600 hover:text-slate-800 transition-colors cursor-pointer flex items-center justify-center">
