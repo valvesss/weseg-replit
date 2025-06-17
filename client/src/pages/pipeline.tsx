@@ -133,15 +133,21 @@ export default function Pipeline() {
                     </span>
                     <span className="text-sm font-semibold text-slate-700">{formatCurrency(columnValue)}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <button className="w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
-                      <Plus className="w-4 h-4" />
-                    </button>
-                    <button className="w-8 h-8 text-slate-600 hover:text-slate-800 transition-colors">
+                  <div className="flex items-center space-x-1 relative group">
+                    <div className="w-8 h-8 text-slate-600 hover:text-slate-800 transition-colors cursor-pointer flex items-center justify-center">
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                       </svg>
-                    </button>
+                    </div>
+                    {/* Dropdown Menu */}
+                    <div className="absolute right-0 top-8 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                      <div className="py-1">
+                        <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add New Card
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
