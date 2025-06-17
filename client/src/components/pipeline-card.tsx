@@ -1,9 +1,13 @@
 import { cn, formatCurrency } from "@/lib/utils";
-import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2, MessageCircle, Copy } from "lucide-react";
+import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2, MessageCircle, Copy, Upload } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
 import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface PipelineCardProps {
   lead: PipelineLead;
@@ -24,6 +28,9 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   const firstContactDate = new Date(lead.createdAt);
   const queryClient = useQueryClient();
   const [isContactExpanded, setIsContactExpanded] = useState(false);
+  const [isAttachDialogOpen, setIsAttachDialogOpen] = useState(false);
+  const [documentType, setDocumentType] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
   const deleteMutation = useMutation({
     mutationFn: async () => {
@@ -49,20 +56,38 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   };
 
   const handleAttachDocument = () => {
-    // Create file input element
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.pdf,.doc,.docx,.txt,.jpg,.png';
-    fileInput.onchange = (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        // Here you would typically upload the file
-        console.log('Attaching document:', file.name);
-        // For now, just show an alert
-        alert(`Document "${file.name}" attached to ${lead.name}`);
+    setIsAttachDialogOpen(true);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        alert('Apenas arquivos PDF são permitidos');
+        return;
       }
-    };
-    fileInput.click();
+      if (file.size > 25 * 1024 * 1024) {
+        alert('Arquivo deve ter no máximo 25MB');
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUploadDocument = () => {
+    if (!selectedFile || !documentType) {
+      alert('Selecione um arquivo e o tipo de documento');
+      return;
+    }
+    
+    // Here you would upload the file
+    console.log('Uploading document:', selectedFile.name, 'Type:', documentType);
+    alert(`Documento "${selectedFile.name}" (${documentType}) anexado a ${lead.name}`);
+    
+    // Reset and close
+    setSelectedFile(null);
+    setDocumentType("");
+    setIsAttachDialogOpen(false);
   };
 
   const handleDeleteCard = () => {
@@ -116,7 +141,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             {/* Attach button */}
             <button 
               onClick={handleAttachDocument}
-              className="text-slate-400 hover:text-slate-600 transition-colors"
+              className="text-slate-400 hover:text-slate-600 transition-colors p-1"
               title="Anexar Documento"
             >
               <Paperclip className="w-4 h-4" />
@@ -124,7 +149,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             
             {/* Menu button */}
             <div className="relative group">
-              <button className="text-slate-400 hover:text-slate-600 transition-colors">
+              <button className="text-slate-400 hover:text-slate-600 transition-colors p-1">
                 <MoreVertical className="w-4 h-4" />
               </button>
               {/* Dropdown Menu */}
@@ -144,7 +169,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             {/* Contact expand button */}
             <button 
               onClick={() => setIsContactExpanded(!isContactExpanded)}
-              className="text-slate-400 hover:text-slate-600 transition-colors"
+              className="text-slate-400 hover:text-slate-600 transition-colors p-1"
             >
               {isContactExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
@@ -217,7 +242,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             <div className="flex items-center text-xs text-slate-500">
               <Calendar className="w-3 h-3 mr-1" />
               <span>
-                Data: {firstContactDate.toLocaleDateString('pt-BR', { 
+                {firstContactDate.toLocaleDateString('pt-BR', { 
                   day: '2-digit',
                   month: '2-digit',
                   year: 'numeric'
@@ -227,6 +252,67 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
           </div>
         </div>
       </div>
+
+      {/* Attach Document Dialog */}
+      <Dialog open={isAttachDialogOpen} onOpenChange={setIsAttachDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Anexar Documento</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="documentType">Tipo de Documento</Label>
+              <Select value={documentType} onValueChange={setDocumentType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="orçamento">Orçamento</SelectItem>
+                  <SelectItem value="proposta">Proposta</SelectItem>
+                  <SelectItem value="seguro">Seguro</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="file">Arquivo (PDF, máx. 25MB)</Label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={handleFileSelect}
+                className="mt-1 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-50 file:text-slate-700 hover:file:bg-slate-100"
+              />
+              {selectedFile && (
+                <p className="text-xs text-slate-600 mt-1">
+                  Arquivo selecionado: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                </p>
+              )}
+            </div>
+            
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => {
+                  setIsAttachDialogOpen(false);
+                  setSelectedFile(null);
+                  setDocumentType("");
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button 
+                onClick={handleUploadDocument}
+                disabled={!selectedFile || !documentType}
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Anexar
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

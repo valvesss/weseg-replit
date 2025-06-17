@@ -308,32 +308,20 @@ export default function Pipeline() {
               <div className={cn("rounded-t-xl p-4", column.headerColor)}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="flex items-center space-x-3">
-                      <h4 className="font-semibold text-slate-800">{column.title}</h4>
-                      <span className="text-slate-600 text-sm px-3 py-1 rounded-full font-medium bg-slate-100">
-                        {columnLeads.length}
-                      </span>
-                    </div>
+                    <h4 className="font-semibold text-slate-800">{column.title}</h4>
                     <p className="text-sm font-semibold text-slate-700 mt-1">{formatCurrency(columnValue)}</p>
                   </div>
-                  <div className="flex items-center space-x-1 relative group">
-                    <div className="w-8 h-8 text-slate-600 hover:text-slate-800 transition-colors cursor-pointer flex items-center justify-center">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                      </svg>
-                    </div>
-                    {/* Dropdown Menu */}
-                    <div className="absolute right-0 top-8 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                      <div className="py-1">
-                        <button 
-                          onClick={() => handleAddCard(column.key)}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center"
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          Adicionar Novo Card
-                        </button>
-                      </div>
-                    </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-slate-600 text-sm px-3 py-1 rounded-full font-medium bg-slate-100">
+                      {columnLeads.length}
+                    </span>
+                    <button 
+                      onClick={() => handleAddCard(column.key)}
+                      className="w-8 h-8 bg-slate-200 hover:bg-slate-300 text-slate-600 hover:text-slate-800 transition-colors rounded-full flex items-center justify-center"
+                      title="Adicionar Novo Lead"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -404,7 +392,7 @@ export default function Pipeline() {
                   <FormItem>
                     <FormLabel>Telefone</FormLabel>
                     <FormControl>
-                      <Input placeholder="(11) 99999-9999" {...field} />
+                      <Input placeholder="(11) 99999-9999" {...field} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
