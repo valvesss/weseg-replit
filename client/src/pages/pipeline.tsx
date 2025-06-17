@@ -10,10 +10,10 @@ import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
 
 const statusColumns = [
-  { key: "leads", title: "Leads", bgColor: "bg-slate-100", badgeColor: "bg-slate-600" },
-  { key: "qualified", title: "Qualified", bgColor: "bg-blue-50", badgeColor: "bg-blue-600" },
-  { key: "proposal", title: "Proposal", bgColor: "bg-amber-50", badgeColor: "bg-amber-600" },
-  { key: "closed", title: "Closed", bgColor: "bg-green-50", badgeColor: "bg-green-600" },
+  { key: "leads", title: "Contato", bgColor: "bg-red-100", badgeColor: "bg-red-500", headerColor: "bg-red-200" },
+  { key: "qualified", title: "Negociação", bgColor: "bg-yellow-100", badgeColor: "bg-yellow-500", headerColor: "bg-yellow-200" },
+  { key: "proposal", title: "Fechamento", bgColor: "bg-blue-100", badgeColor: "bg-blue-500", headerColor: "bg-blue-200" },
+  { key: "closed", title: "Finalizado", bgColor: "bg-green-100", badgeColor: "bg-green-500", headerColor: "bg-green-200" },
 ];
 
 export default function Pipeline() {
@@ -99,14 +99,9 @@ export default function Pipeline() {
   return (
     <Layout currentPage="pipeline">
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-3xl font-bold text-slate-800">
-              {formatCurrency(totalPipelineValue)}
-            </h3>
-            <p className="text-slate-600">Total Pipeline Value</p>
-          </div>
-        </div>
+        <h2 className="text-xl font-semibold text-slate-800 mb-1">
+          Total de seguros em negociação: {leads.length}
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -130,21 +125,28 @@ export default function Pipeline() {
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, column.key)}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h4 className="font-semibold text-slate-800">{column.title}</h4>
-                  <p className="text-sm text-slate-600 font-medium">{formatCurrency(columnValue)}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className={cn(
-                    "text-white text-xs px-2 py-1 rounded-full",
-                    column.badgeColor
-                  )}>
-                    {columnLeads.length}
-                  </span>
-                  <button className="w-6 h-6 bg-slate-600 text-white rounded-full flex items-center justify-center text-xs hover:bg-slate-700 transition-colors">
-                    <Plus className="w-3 h-3" />
-                  </button>
+              <div className={cn("rounded-lg p-4 mb-4", column.headerColor)}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <h4 className="font-semibold text-slate-800">{column.title}</h4>
+                    <span className={cn(
+                      "text-white text-sm px-3 py-1 rounded-full font-medium",
+                      column.badgeColor
+                    )}>
+                      {columnLeads.length}
+                    </span>
+                    <span className="text-sm font-semibold text-slate-700">{formatCurrency(columnValue)}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <button className="w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                      <Plus className="w-4 h-4" />
+                    </button>
+                    <button className="w-8 h-8 text-slate-600 hover:text-slate-800 transition-colors">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
               
