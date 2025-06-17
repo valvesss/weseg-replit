@@ -63,15 +63,13 @@ export function Sidebar({ currentPage }: SidebarProps) {
   const [location] = useLocation();
 
   return (
-    <aside className="w-64 bg-white shadow-lg border-r border-slate-200 fixed h-full z-10">
+    <aside className="w-56 bg-white shadow-lg border-r border-slate-200 fixed h-full z-10">
       <div className="p-6 border-b border-slate-200">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <Shield className="text-white text-lg" />
-          </div>
+          <div className="text-2xl">🛡️</div>
           <div>
-            <h1 className="text-xl font-bold text-slate-800">InsurePro</h1>
-            <p className="text-sm text-slate-500">Broker Platform</p>
+            <h1 className="text-xl font-bold text-slate-800">WeSeg</h1>
+            <p className="text-sm text-slate-500">Insurance Broker</p>
           </div>
         </div>
       </div>
