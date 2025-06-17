@@ -202,7 +202,7 @@ export default function Profile() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
+                          <FormLabel>Telefone</FormLabel>
                           <FormControl>
                             <Input type="tel" {...field} />
                           </FormControl>
@@ -216,7 +216,7 @@ export default function Profile() {
                       name="address"
                       render={({ field }) => (
                         <FormItem className="md:col-span-2">
-                          <FormLabel>Business Address</FormLabel>
+                          <FormLabel>Endereço Comercial</FormLabel>
                           <FormControl>
                             <Textarea {...field} rows={3} />
                           </FormControl>
@@ -230,14 +230,14 @@ export default function Profile() {
 
               <Card>
                 <CardContent className="p-6">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Professional Information</h4>
+                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Informações Profissionais</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="licenseNumber"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>License Number</FormLabel>
+                          <FormLabel>Número da Licença</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -251,7 +251,7 @@ export default function Profile() {
                       name="licenseExpiry"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>License Expiry</FormLabel>
+                          <FormLabel>Vencimento da Licença</FormLabel>
                           <FormControl>
                             <Input type="date" {...field} />
                           </FormControl>
@@ -265,18 +265,18 @@ export default function Profile() {
                       name="experience"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Years of Experience</FormLabel>
+                          <FormLabel>Anos de Experiência</FormLabel>
                           <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select experience level" />
+                                <SelectValue placeholder="Selecione o nível de experiência" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="1-2 years">1-2 years</SelectItem>
-                              <SelectItem value="3-5 years">3-5 years</SelectItem>
-                              <SelectItem value="5-10 years">5-10 years</SelectItem>
-                              <SelectItem value="10+ years">10+ years</SelectItem>
+                              <SelectItem value="1-2 years">1-2 anos</SelectItem>
+                              <SelectItem value="3-5 years">3-5 anos</SelectItem>
+                              <SelectItem value="5-10 years">5-10 anos</SelectItem>
+                              <SelectItem value="10+ years">10+ anos</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -289,10 +289,10 @@ export default function Profile() {
 
               <div className="flex justify-end space-x-4">
                 <Button type="button" variant="outline">
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={updateProfileMutation.isPending}>
-                  {updateProfileMutation.isPending ? "Saving..." : "Save Changes"}
+                  {updateProfileMutation.isPending ? "Salvando..." : "Salvar Alterações"}
                 </Button>
               </div>
             </div>

@@ -62,18 +62,18 @@ export default function Contacts() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                 <Input
-                  placeholder="Search contacts..."
+                  placeholder="Buscar contatos..."
                   className="pl-10 w-64"
                 />
               </div>
               <Select>
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="All Types" />
+                  <SelectValue placeholder="Todos os Tipos" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="individual">Individual</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="all">Todos os Tipos</SelectItem>
+                  <SelectItem value="individual">Pessoa Física</SelectItem>
+                  <SelectItem value="business">Empresarial</SelectItem>
                 </SelectContent>
               </Select>
             </div>
