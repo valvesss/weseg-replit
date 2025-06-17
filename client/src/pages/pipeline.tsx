@@ -77,8 +77,11 @@ export default function Pipeline() {
 
   const onAddCardSubmit = (data: AddCardFormData) => {
     const leadData: InsertPipelineLead = {
-      ...data,
-      annualPremium: parseFloat(data.annualPremium),
+      name: data.name,
+      email: data.email,
+      phone: data.phone || undefined,
+      insuranceType: data.insuranceType,
+      annualPremium: data.annualPremium,
       status: addCardStatus,
     };
     addLeadMutation.mutate(leadData);
@@ -356,6 +359,121 @@ export default function Pipeline() {
           );
         })}
       </div>
+
+      {/* Add Card Dialog */}
+      <Dialog open={isAddCardOpen} onOpenChange={setIsAddCardOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Adicionar Novo Lead</DialogTitle>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onAddCardSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nome do lead" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="email@exemplo.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Telefone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="(11) 99999-9999" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="insuranceType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tipo de Seguro</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o tipo" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="auto">Auto</SelectItem>
+                        <SelectItem value="home">Residencial</SelectItem>
+                        <SelectItem value="life">Vida</SelectItem>
+                        <SelectItem value="business">Empresarial</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="annualPremium"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Valor Anual (R$)</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0.00" 
+                        step="0.01"
+                        min="0"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsAddCardOpen(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={addLeadMutation.isPending}
+                >
+                  {addLeadMutation.isPending ? "Criando..." : "Criar Lead"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 }
