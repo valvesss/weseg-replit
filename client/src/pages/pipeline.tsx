@@ -116,16 +116,12 @@ export default function Pipeline() {
           return (
             <div
               key={column.key}
-              className={cn(
-                "rounded-xl p-4 pipeline-column",
-                column.bgColor,
-                isOver && "drag-over"
-              )}
+              className="bg-white rounded-xl shadow-sm border border-slate-200"
               onDragOver={(e) => handleDragOver(e, column.key)}
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, column.key)}
             >
-              <div className={cn("rounded-lg p-4 mb-4", column.headerColor)}>
+              <div className={cn("rounded-t-xl p-4", column.headerColor)}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <h4 className="font-semibold text-slate-800">{column.title}</h4>
@@ -150,7 +146,7 @@ export default function Pipeline() {
                 </div>
               </div>
               
-              <div className="space-y-3 min-h-[400px]">
+              <div className="p-4 space-y-3 min-h-[400px]">
                 {columnLeads.length === 0 ? (
                   <div className="text-center py-8 text-slate-500">
                     <p className="text-sm">No leads in this stage</p>

@@ -21,13 +21,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   const firstContactDate = new Date(lead.createdAt);
   
   const getStatusColor = () => {
-    switch (lead.status) {
-      case "leads": return "bg-red-50 border-red-200";
-      case "qualified": return "bg-yellow-50 border-yellow-200";
-      case "proposal": return "bg-blue-50 border-blue-200";
-      case "closed": return "bg-green-50 border-green-200";
-      default: return "bg-white border-slate-200";
-    }
+    return "bg-white border-slate-200";
   };
   
   return (
@@ -42,7 +36,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       onDragEnd={onDragEnd}
     >
       <div className="flex items-center justify-between mb-3">
-        <h5 className="font-semibold text-slate-800">{lead.name}</h5>
+        <h3 className="text-lg font-bold text-slate-800">{lead.name}</h3>
         <div className="flex items-center space-x-1">
           <button className="text-slate-400 hover:text-slate-600 transition-colors">
             <FileText className="w-4 h-4" />
