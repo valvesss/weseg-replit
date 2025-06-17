@@ -2,10 +2,11 @@ import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PipelineCard } from "@/components/pipeline-card";
 import { useState } from "react";
-import { Plus, Search, TrendingUp, Users, DollarSign } from "lucide-react";
+import { Plus, Search, TrendingUp, Users, DollarSign, Filter } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
@@ -21,6 +22,8 @@ export default function Pipeline() {
   const [draggedLead, setDraggedLead] = useState<PipelineLead | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [insuranceFilter, setInsuranceFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const queryClient = useQueryClient();
 
   const { data: leads = [], isLoading } = useQuery<PipelineLead[]>({
@@ -68,14 +71,31 @@ export default function Pipeline() {
   };
 
   const getLeadsByStatus = (status: string) => {
-    const filteredLeads = leads.filter(lead => lead.status === status);
-    if (!searchQuery) return filteredLeads;
-    return filteredLeads.filter(lead => 
-      lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.insuranceType.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    let filteredLeads = leads.filter(lead => lead.status === status);
+    
+    // Apply insurance type filter
+    if (insuranceFilter !== "all") {
+      filteredLeads = filteredLeads.filter(lead => lead.insuranceType === insuranceFilter);
+    }
+    
+    // Apply search query
+    if (searchQuery) {
+      filteredLeads = filteredLeads.filter(lead => 
+        lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lead.insuranceType.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filteredLeads;
   };
+
+  const uniqueInsuranceTypes = leads.reduce((types: string[], lead) => {
+    if (!types.includes(lead.insuranceType)) {
+      types.push(lead.insuranceType);
+    }
+    return types;
+  }, []);
 
   if (isLoading) {
     return (
@@ -169,15 +189,61 @@ export default function Pipeline() {
           </Card>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-          <Input
-            placeholder="Search leads by name, email, or insurance type..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
+        {/* Search and Filters */}
+        <div className="flex items-center gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <Input
+              placeholder="Search leads by name, email, or insurance type..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-slate-500" />
+            <Select value={insuranceFilter} onValueChange={setInsuranceFilter}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Insurance Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {uniqueInsuranceTypes.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-36">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="leads">Contato</SelectItem>
+                <SelectItem value="qualified">Negociação</SelectItem>
+                <SelectItem value="proposal">Fechamento</SelectItem>
+                <SelectItem value="closed">Finalizado</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            {(searchQuery || insuranceFilter !== "all" || statusFilter !== "all") && (
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  setSearchQuery("");
+                  setInsuranceFilter("all");
+                  setStatusFilter("all");
+                }}
+              >
+                Clear
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 

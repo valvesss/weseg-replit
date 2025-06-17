@@ -80,10 +80,12 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       onDragEnd={onDragEnd}
     >
       {/* Card Header */}
-      <div className={cn("rounded-t-lg p-3", getStatusColor())}>
+      <div className={cn("rounded-t-lg p-2", getStatusColor())}>
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-slate-800">{lead.name}</h3>
+            <h3 className="text-xs font-semibold text-slate-800 truncate" title={lead.name}>
+              {lead.name}
+            </h3>
           </div>
           <div className="flex items-center space-x-1">
             <div className="relative group">
