@@ -5,6 +5,7 @@ import {
   claims,
   documents,
   brokerProfile,
+  users,
   type Contact,
   type InsertContact,
   type PipelineLead,
@@ -17,7 +18,11 @@ import {
   type InsertDocument,
   type BrokerProfile,
   type InsertBrokerProfile,
+  type User,
+  type UpsertUser,
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (required for authentication)
@@ -555,4 +560,135 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  // User operations (required for authentication)
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
+  // For now, keeping the existing MemStorage methods for other operations
+  // These would be replaced with database operations in a full implementation
+  private memStorage = new MemStorage();
+
+  async getContacts(): Promise<Contact[]> {
+    return this.memStorage.getContacts();
+  }
+
+  async getContact(id: number): Promise<Contact | undefined> {
+    return this.memStorage.getContact(id);
+  }
+
+  async createContact(contact: InsertContact): Promise<Contact> {
+    return this.memStorage.createContact(contact);
+  }
+
+  async updateContact(id: number, contact: Partial<InsertContact>): Promise<Contact | undefined> {
+    return this.memStorage.updateContact(id, contact);
+  }
+
+  async deleteContact(id: number): Promise<boolean> {
+    return this.memStorage.deleteContact(id);
+  }
+
+  async getPipelineLeads(): Promise<PipelineLead[]> {
+    return this.memStorage.getPipelineLeads();
+  }
+
+  async getPipelineLead(id: number): Promise<PipelineLead | undefined> {
+    return this.memStorage.getPipelineLead(id);
+  }
+
+  async createPipelineLead(lead: InsertPipelineLead): Promise<PipelineLead> {
+    return this.memStorage.createPipelineLead(lead);
+  }
+
+  async updatePipelineLead(id: number, lead: Partial<InsertPipelineLead>): Promise<PipelineLead | undefined> {
+    return this.memStorage.updatePipelineLead(id, lead);
+  }
+
+  async deletePipelineLead(id: number): Promise<boolean> {
+    return this.memStorage.deletePipelineLead(id);
+  }
+
+  async getPolicies(): Promise<Policy[]> {
+    return this.memStorage.getPolicies();
+  }
+
+  async getPolicy(id: number): Promise<Policy | undefined> {
+    return this.memStorage.getPolicy(id);
+  }
+
+  async createPolicy(policy: InsertPolicy): Promise<Policy> {
+    return this.memStorage.createPolicy(policy);
+  }
+
+  async updatePolicy(id: number, policy: Partial<InsertPolicy>): Promise<Policy | undefined> {
+    return this.memStorage.updatePolicy(id, policy);
+  }
+
+  async deletePolicy(id: number): Promise<boolean> {
+    return this.memStorage.deletePolicy(id);
+  }
+
+  async getClaims(): Promise<Claim[]> {
+    return this.memStorage.getClaims();
+  }
+
+  async getClaim(id: number): Promise<Claim | undefined> {
+    return this.memStorage.getClaim(id);
+  }
+
+  async createClaim(claim: InsertClaim): Promise<Claim> {
+    return this.memStorage.createClaim(claim);
+  }
+
+  async updateClaim(id: number, claim: Partial<InsertClaim>): Promise<Claim | undefined> {
+    return this.memStorage.updateClaim(id, claim);
+  }
+
+  async deleteClaim(id: number): Promise<boolean> {
+    return this.memStorage.deleteClaim(id);
+  }
+
+  async getDocuments(): Promise<Document[]> {
+    return this.memStorage.getDocuments();
+  }
+
+  async getDocument(id: number): Promise<Document | undefined> {
+    return this.memStorage.getDocument(id);
+  }
+
+  async createDocument(document: InsertDocument): Promise<Document> {
+    return this.memStorage.createDocument(document);
+  }
+
+  async deleteDocument(id: number): Promise<boolean> {
+    return this.memStorage.deleteDocument(id);
+  }
+
+  async getBrokerProfile(): Promise<BrokerProfile | undefined> {
+    return this.memStorage.getBrokerProfile();
+  }
+
+  async createOrUpdateBrokerProfile(profile: InsertBrokerProfile): Promise<BrokerProfile> {
+    return this.memStorage.createOrUpdateBrokerProfile(profile);
+  }
+}
+
+export const storage = new DatabaseStorage();
