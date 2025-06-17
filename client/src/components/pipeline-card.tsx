@@ -177,6 +177,72 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
           </div>
         </div>
       </div>
+      
+      {/* Expandable Contact Options */}
+      {isContactExpanded && (
+        <div className="border-t border-slate-200 bg-slate-50 p-3">
+          <div className="space-y-2">
+            <div className="text-xs font-medium text-slate-600 mb-2">Opções de Contato</div>
+            
+            {/* Email Section */}
+            <div className="flex items-center justify-between py-1">
+              <div className="flex items-center text-sm text-slate-700">
+                <Mail className="w-4 h-4 mr-2 text-slate-500" />
+                <span className="truncate max-w-[120px]" title={lead.email}>{lead.email}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <button
+                  onClick={handleEmailClick}
+                  className="p-1 text-slate-500 hover:text-blue-600 transition-colors"
+                  title="Abrir email"
+                >
+                  <Mail className="w-3 h-3" />
+                </button>
+                <button
+                  onClick={handleCopyEmail}
+                  className="p-1 text-slate-500 hover:text-slate-700 transition-colors"
+                  title="Copiar email"
+                >
+                  <Copy className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Phone Section */}
+            {lead.phone && (
+              <div className="flex items-center justify-between py-1">
+                <div className="flex items-center text-sm text-slate-700">
+                  <Phone className="w-4 h-4 mr-2 text-slate-500" />
+                  <span>{lead.phone}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={handlePhoneClick}
+                    className="p-1 text-slate-500 hover:text-green-600 transition-colors"
+                    title="Ligar"
+                  >
+                    <Phone className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={handleWhatsAppClick}
+                    className="p-1 text-slate-500 hover:text-green-600 transition-colors"
+                    title="WhatsApp"
+                  >
+                    <MessageCircle className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={handleCopyPhone}
+                    className="p-1 text-slate-500 hover:text-slate-700 transition-colors"
+                    title="Copiar telefone"
+                  >
+                    <Copy className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
