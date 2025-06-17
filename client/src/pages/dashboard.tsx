@@ -45,12 +45,12 @@ export default function Dashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Active Policies</p>
+                <p className="text-slate-600 text-sm font-medium">Apólices Ativas</p>
                 <p className="text-3xl font-bold text-slate-800 mt-2">
                   {stats?.activePolicies || 0}
                 </p>
                 <p className="text-sm text-green-600 mt-2 flex items-center">
-                  <ArrowUp className="w-4 h-4 mr-1" /> +12% from last month
+                  <ArrowUp className="w-4 h-4 mr-1" /> +12% do mês passado
                 </p>
               </div>
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -64,12 +64,12 @@ export default function Dashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Open Claims</p>
+                <p className="text-slate-600 text-sm font-medium">Sinistros Abertos</p>
                 <p className="text-3xl font-bold text-slate-800 mt-2">
                   {stats?.openClaims || 0}
                 </p>
                 <p className="text-sm text-amber-600 mt-2 flex items-center">
-                  <Clock className="w-4 h-4 mr-1" /> {stats?.pendingClaims || 0} pending review
+                  <Clock className="w-4 h-4 mr-1" /> {stats?.pendingClaims || 0} aguardando análise
                 </p>
               </div>
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
@@ -83,16 +83,16 @@ export default function Dashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Monthly Revenue</p>
+                <p className="text-slate-600 text-sm font-medium">Receita Mensal</p>
                 <p className="text-3xl font-bold text-slate-800 mt-2">
-                  {stats ? formatCurrency(stats.monthlyRevenue) : "$0"}
+                  {stats ? formatCurrency(stats.monthlyRevenue) : "R$ 0"}
                 </p>
                 <p className="text-sm text-green-600 mt-2 flex items-center">
-                  <ArrowUp className="w-4 h-4 mr-1" /> +8.2% from last month
+                  <ArrowUp className="w-4 h-4 mr-1" /> +8,2% do mês passado
                 </p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <span className="text-green-600 font-bold">$</span>
+                <span className="text-green-600 font-bold">R$</span>
               </div>
             </div>
           </CardContent>
@@ -102,12 +102,12 @@ export default function Dashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">New Leads</p>
+                <p className="text-slate-600 text-sm font-medium">Novos Leads</p>
                 <p className="text-3xl font-bold text-slate-800 mt-2">
                   {stats?.newLeads || 0}
                 </p>
                 <p className="text-sm text-primary mt-2 flex items-center">
-                  <User className="w-4 h-4 mr-1" /> 8 this week
+                  <User className="w-4 h-4 mr-1" /> 8 esta semana
                 </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -123,12 +123,12 @@ export default function Dashboard() {
         <div className="lg:col-span-2">
           <Card>
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Recent Activity</h3>
+              <h3 className="text-lg font-semibold text-slate-800 mb-4">Atividade Recente</h3>
               <div className="space-y-4">
                 <div className="text-center py-8 text-slate-500">
                   <FileText className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                  <p>No recent activity to display</p>
-                  <p className="text-sm">Activity will appear here as you use the platform</p>
+                  <p>Nenhuma atividade recente para exibir</p>
+                  <p className="text-sm">A atividade aparecerá aqui conforme você usar a plataforma</p>
                 </div>
               </div>
             </CardContent>

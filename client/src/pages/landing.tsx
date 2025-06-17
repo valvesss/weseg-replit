@@ -10,11 +10,11 @@ export default function Landing() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             <span className="text-blue-600">WeSeg</span>
-            <span className="block text-3xl md:text-4xl mt-2">Insurance Broker Management Platform</span>
+            <span className="block text-3xl md:text-4xl mt-2">Plataforma de Gestão para Corretores de Seguros</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Streamline your insurance business with our comprehensive platform for managing clients, 
-            policies, claims, and pipeline leads in one powerful dashboard.
+            Otimize seu negócio de seguros com nossa plataforma abrangente para gerenciar clientes, 
+            apólices, sinistros e leads de vendas em um painel poderoso e integrado.
           </p>
           <Button 
             onClick={() => window.location.href = '/api/login'}
@@ -22,7 +22,7 @@ export default function Landing() {
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
           >
             <LogIn className="mr-2 h-5 w-5" />
-            Sign In to Get Started
+            Faça Login para Começar
           </Button>
         </div>
 
@@ -31,11 +31,11 @@ export default function Landing() {
           <Card className="text-center">
             <CardHeader>
               <Shield className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <CardTitle>Policy Management</CardTitle>
+              <CardTitle>Gestão de Apólices</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Track and manage all your insurance policies with automated renewals and status updates.
+                Monitore e gerencie todas as suas apólices de seguro com renovações automáticas e atualizações de status.
               </CardDescription>
             </CardContent>
           </Card>
@@ -43,11 +43,11 @@ export default function Landing() {
           <Card className="text-center">
             <CardHeader>
               <Users className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <CardTitle>Client Tracking</CardTitle>
+              <CardTitle>Acompanhamento de Clientes</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Maintain detailed client profiles with contact history and communication logs.
+                Mantenha perfis detalhados de clientes com histórico de contatos e registros de comunicação.
               </CardDescription>
             </CardContent>
           </Card>
@@ -55,11 +55,11 @@ export default function Landing() {
           <Card className="text-center">
             <CardHeader>
               <FileText className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <CardTitle>Claims Processing</CardTitle>
+              <CardTitle>Processamento de Sinistros</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Streamline claims management with status tracking and document organization.
+                Simplifique o gerenciamento de sinistros com rastreamento de status e organização de documentos.
               </CardDescription>
             </CardContent>
           </Card>
@@ -67,11 +67,11 @@ export default function Landing() {
           <Card className="text-center">
             <CardHeader>
               <TrendingUp className="h-12 w-12 text-orange-600 mx-auto mb-4" />
-              <CardTitle>Sales Pipeline</CardTitle>
+              <CardTitle>Pipeline de Vendas</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Visualize and manage your sales pipeline from leads to closed deals.
+                Visualize e gerencie seu funil de vendas desde leads até negócios fechados.
               </CardDescription>
             </CardContent>
           </Card>
@@ -79,19 +79,19 @@ export default function Landing() {
 
         {/* Statistics */}
         <div className="bg-blue-600 text-white rounded-lg p-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Built for Insurance Professionals</h2>
+          <h2 className="text-3xl font-bold mb-6">Desenvolvido para Profissionais de Seguros</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="text-4xl font-bold mb-2">100%</div>
-              <div className="text-blue-200">Cloud-Based</div>
+              <div className="text-blue-200">Baseado na Nuvem</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">24/7</div>
-              <div className="text-blue-200">Access Anywhere</div>
+              <div className="text-blue-200">Acesso de Qualquer Lugar</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">Secure</div>
-              <div className="text-blue-200">Data Protection</div>
+              <div className="text-4xl font-bold mb-2">Seguro</div>
+              <div className="text-blue-200">Proteção de Dados</div>
             </div>
           </div>
         </div>

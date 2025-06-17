@@ -18,7 +18,7 @@ interface SidebarProps {
 
 const navigationItems = [
   {
-    name: "Dashboard",
+    name: "Painel",
     href: "/",
     icon: BarChart3,
     key: "dashboard",
@@ -30,31 +30,31 @@ const navigationItems = [
     key: "pipeline",
   },
   {
-    name: "Contacts",
+    name: "Contatos",
     href: "/contacts",
     icon: Users,
     key: "contacts",
   },
   {
-    name: "Claims",
+    name: "Sinistros",
     href: "/claims",
     icon: FileText,
     key: "claims",
   },
   {
-    name: "Policies",
+    name: "Apólices",
     href: "/policies",
     icon: Shield,
     key: "policies",
   },
   {
-    name: "Documents",
+    name: "Documentos",
     href: "/documents",
     icon: FolderOpen,
     key: "documents",
   },
   {
-    name: "My Profile",
+    name: "Meu Perfil",
     href: "/profile",
     icon: User,
     key: "profile",

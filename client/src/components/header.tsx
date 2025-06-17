@@ -9,13 +9,13 @@ interface HeaderProps {
 }
 
 const pageTitles = {
-  dashboard: { title: "Dashboard", subtitle: "Welcome back! Here's your business overview." },
-  pipeline: { title: "Sales Pipeline", subtitle: "Manage your leads and track progress through the sales funnel." },
-  contacts: { title: "Contact Management", subtitle: "Manage your client relationships and contact information." },
-  claims: { title: "Claims Management", subtitle: "Track and process insurance claims efficiently." },
-  policies: { title: "Policy Management", subtitle: "Manage and track all insurance policies." },
-  documents: { title: "Document Management", subtitle: "Upload, organize, and manage all your business documents." },
-  profile: { title: "My Profile", subtitle: "Manage your broker profile and account settings." },
+  dashboard: { title: "Painel de Controle", subtitle: "Bem-vindo de volta! Aqui está a visão geral do seu negócio." },
+  pipeline: { title: "Pipeline de Vendas", subtitle: "Gerencie seus leads e acompanhe o progresso através do funil de vendas." },
+  contacts: { title: "Gestão de Contatos", subtitle: "Gerencie seus relacionamentos com clientes e informações de contato." },
+  claims: { title: "Gestão de Sinistros", subtitle: "Rastreie e processe sinistros de seguro com eficiência." },
+  policies: { title: "Gestão de Apólices", subtitle: "Gerencie e acompanhe todas as apólices de seguro." },
+  documents: { title: "Gestão de Documentos", subtitle: "Envie, organize e gerencie todos os documentos do seu negócio." },
+  profile: { title: "Meu Perfil", subtitle: "Gerencie seu perfil de corretor e configurações da conta." },
 };
 
 export function Header({ currentPage }: HeaderProps) {
@@ -52,7 +52,7 @@ export function Header({ currentPage }: HeaderProps) {
             className="ml-4"
           >
             <LogOut className="w-4 h-4 mr-2" />
-            Logout
+            Sair
           </Button>
         </div>
       </div>
