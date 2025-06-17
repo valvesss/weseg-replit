@@ -280,7 +280,7 @@ export default function Pipeline() {
                 </div>
               </div>
               
-              <div className="p-4 space-y-3 min-h-[400px]">
+              <div className="p-4 space-y-3 h-[calc(100vh-280px)] overflow-y-auto">
                 {columnLeads.length === 0 ? (
                   <div className="text-center py-8 text-slate-500">
                     <p className="text-sm">Nenhum lead nesta etapa</p>

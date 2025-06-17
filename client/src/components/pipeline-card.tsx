@@ -1,8 +1,9 @@
 import { cn, formatCurrency } from "@/lib/utils";
-import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2 } from "lucide-react";
+import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2, MessageCircle, Copy } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
+import { useState } from "react";
 
 interface PipelineCardProps {
   lead: PipelineLead;
@@ -22,6 +23,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   const premium = lead.annualPremium ? parseFloat(lead.annualPremium.toString()) : 0;
   const firstContactDate = new Date(lead.createdAt);
   const queryClient = useQueryClient();
+  const [isContactExpanded, setIsContactExpanded] = useState(false);
   
   const deleteMutation = useMutation({
     mutationFn: async () => {
@@ -68,6 +70,29 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       deleteMutation.mutate();
     }
   };
+
+  const handleEmailClick = () => {
+    window.open(`mailto:${lead.email}`, '_blank');
+  };
+
+  const handlePhoneClick = () => {
+    window.open(`tel:${lead.phone}`, '_blank');
+  };
+
+  const handleWhatsAppClick = () => {
+    const phone = lead.phone?.replace(/\D/g, '');
+    window.open(`https://wa.me/55${phone}`, '_blank');
+  };
+
+  const handleCopyEmail = async () => {
+    await navigator.clipboard.writeText(lead.email);
+  };
+
+  const handleCopyPhone = async () => {
+    if (lead.phone) {
+      await navigator.clipboard.writeText(lead.phone);
+    }
+  };
   
   return (
     <div
@@ -88,12 +113,13 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             </h3>
           </div>
           <div className="flex items-center space-x-1">
+            {/* Menu button (moved to left) */}
             <div className="relative group">
               <button className="text-slate-400 hover:text-slate-600 transition-colors">
                 <MoreVertical className="w-4 h-4" />
               </button>
               {/* Dropdown Menu */}
-              <div className="absolute right-0 top-6 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+              <div className="absolute left-0 top-6 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                 <div className="py-1">
                   <button 
                     onClick={handleAttachDocument}
@@ -112,6 +138,14 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
                 </div>
               </div>
             </div>
+            
+            {/* Contact expand button */}
+            <button 
+              onClick={() => setIsContactExpanded(!isContactExpanded)}
+              className="text-slate-400 hover:text-slate-600 transition-colors"
+            >
+              {isContactExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </div>
