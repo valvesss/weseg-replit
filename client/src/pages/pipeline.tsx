@@ -255,10 +255,7 @@ export default function Pipeline() {
                   <div>
                     <div className="flex items-center space-x-3">
                       <h4 className="font-semibold text-slate-800">{column.title}</h4>
-                      <span className={cn(
-                        "text-white text-sm px-3 py-1 rounded-full font-medium",
-                        column.badgeColor
-                      )}>
+                      <span className="text-slate-600 text-sm px-3 py-1 rounded-full font-medium bg-slate-100">
                         {columnLeads.length}
                       </span>
                     </div>
@@ -275,7 +272,7 @@ export default function Pipeline() {
                       <div className="py-1">
                         <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center">
                           <Plus className="w-4 h-4 mr-2" />
-                          Add New Card
+                          Adicionar Novo Card
                         </button>
                       </div>
                     </div>
@@ -286,7 +283,7 @@ export default function Pipeline() {
               <div className="p-4 space-y-3 min-h-[400px]">
                 {columnLeads.length === 0 ? (
                   <div className="text-center py-8 text-slate-500">
-                    <p className="text-sm">No leads in this stage</p>
+                    <p className="text-sm">Nenhum lead nesta etapa</p>
                   </div>
                 ) : (
                   columnLeads.map((lead) => (
