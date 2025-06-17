@@ -1,10 +1,11 @@
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PipelineCard } from "@/components/pipeline-card";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Search, TrendingUp, Users, DollarSign } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
@@ -19,6 +20,7 @@ const statusColumns = [
 export default function Pipeline() {
   const [draggedLead, setDraggedLead] = useState<PipelineLead | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
 
   const { data: leads = [], isLoading } = useQuery<PipelineLead[]>({
@@ -66,7 +68,13 @@ export default function Pipeline() {
   };
 
   const getLeadsByStatus = (status: string) => {
-    return leads.filter(lead => lead.status === status);
+    const filteredLeads = leads.filter(lead => lead.status === status);
+    if (!searchQuery) return filteredLeads;
+    return filteredLeads.filter(lead => 
+      lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lead.insuranceType.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   };
 
   if (isLoading) {
@@ -96,12 +104,81 @@ export default function Pipeline() {
     return sum + premium;
   }, 0);
 
+  const averageDealValue = leads.length > 0 ? totalPipelineValue / leads.length : 0;
+  const conversionRate = leads.length > 0 ? (leads.filter(l => l.status === 'closed').length / leads.length) * 100 : 0;
+
   return (
     <Layout currentPage="pipeline">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-slate-800 mb-1">
-          Total de seguros em negociação: {leads.length}
-        </h2>
+      {/* Top Stats and Search */}
+      <div className="mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 rounded-lg mr-4">
+                  <DollarSign className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Total Pipeline</p>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(totalPipelineValue)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 rounded-lg mr-4">
+                  <Users className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Total Leads</p>
+                  <p className="text-2xl font-bold text-slate-900">{leads.length}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 rounded-lg mr-4">
+                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Avg Deal Value</p>
+                  <p className="text-2xl font-bold text-slate-900">{formatCurrency(averageDealValue)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 rounded-lg mr-4">
+                  <TrendingUp className="w-6 h-6 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Conversion Rate</p>
+                  <p className="text-2xl font-bold text-slate-900">{conversionRate.toFixed(1)}%</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+          <Input
+            placeholder="Search leads by name, email, or insurance type..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

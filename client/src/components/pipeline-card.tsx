@@ -25,9 +25,11 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      return await apiRequest(`/api/pipeline-leads/${lead.id}`, {
+      const response = await fetch(`/api/pipeline-leads/${lead.id}`, {
         method: 'DELETE',
       });
+      if (!response.ok) throw new Error('Delete failed');
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/pipeline-leads'] });
@@ -84,9 +86,6 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             <h3 className="text-lg font-bold text-slate-800">{lead.name}</h3>
           </div>
           <div className="flex items-center space-x-1">
-            <button className="text-slate-400 hover:text-slate-600 transition-colors">
-              <FileText className="w-4 h-4" />
-            </button>
             <div className="relative group">
               <button className="text-slate-400 hover:text-slate-600 transition-colors">
                 <MoreVertical className="w-4 h-4" />
