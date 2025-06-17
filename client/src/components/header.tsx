@@ -1,5 +1,6 @@
-import { Bell } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import type { BrokerProfile } from "@shared/schema";
 import { getInitials } from "@/lib/utils";
 
@@ -44,6 +45,15 @@ export function Header({ currentPage }: HeaderProps) {
             </div>
             <span className="text-slate-700 font-medium">{userName}</span>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.location.href = '/api/logout'}
+            className="ml-4"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
         </div>
       </div>
     </header>
