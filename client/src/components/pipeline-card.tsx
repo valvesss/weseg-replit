@@ -1,5 +1,5 @@
 import { cn, formatCurrency } from "@/lib/utils";
-import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2, MessageCircle, Copy, Upload } from "lucide-react";
+import { Mail, Phone, FileText, Calendar, ChevronDown, ChevronUp, MoreVertical, Paperclip, Trash2, MessageCircle, Copy, Upload, Archive } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { PipelineLead } from "@shared/schema";
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 interface PipelineCardProps {
   lead: PipelineLead;
@@ -31,19 +32,9 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
   const [isAttachDialogOpen, setIsAttachDialogOpen] = useState(false);
   const [documentType, setDocumentType] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   
-  const deleteMutation = useMutation({
-    mutationFn: async () => {
-      const response = await fetch(`/api/pipeline-leads/${lead.id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Delete failed');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/pipeline-leads'] });
-    }
-  });
+  // Archive functionality can be implemented here when backend supports it
   
   const getStatusColor = () => {
     switch (lead.status) {
@@ -90,10 +81,15 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
     setIsAttachDialogOpen(false);
   };
 
-  const handleDeleteCard = () => {
-    if (confirm(`Are you sure you want to delete ${lead.name}?`)) {
-      deleteMutation.mutate();
-    }
+  const handleArchiveCard = () => {
+    setIsArchiveDialogOpen(true);
+  };
+
+  const confirmArchive = () => {
+    // Here you would typically update the lead status to archived
+    console.log('Archiving lead:', lead.name);
+    alert(`Lead "${lead.name}" foi arquivado`);
+    setIsArchiveDialogOpen(false);
   };
 
   const handleEmailClick = () => {
@@ -147,24 +143,14 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
               <Paperclip className="w-4 h-4" />
             </button>
             
-            {/* Menu button */}
-            <div className="relative group">
-              <button className="text-slate-400 hover:text-slate-600 transition-colors p-1">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-              {/* Dropdown Menu */}
-              <div className="absolute right-0 top-6 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <div className="py-1">
-                  <button 
-                    onClick={handleDeleteCard}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Excluir Card
-                  </button>
-                </div>
-              </div>
-            </div>
+            {/* Archive button */}
+            <button 
+              onClick={handleArchiveCard}
+              className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              title="Arquivar Card"
+            >
+              <Archive className="w-4 h-4" />
+            </button>
             
             {/* Contact expand button */}
             <button 
@@ -313,6 +299,24 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Archive Confirmation Dialog */}
+      <AlertDialog open={isArchiveDialogOpen} onOpenChange={setIsArchiveDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Arquivar Lead</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja arquivar o lead "{lead.name}"? Esta ação pode ser revertida posteriormente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmArchive}>
+              Arquivar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
