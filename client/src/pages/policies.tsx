@@ -54,12 +54,12 @@ export default function Policies() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-slate-800">Policy Management</h3>
-            <p className="text-slate-600">Manage and track all insurance policies</p>
+            <h3 className="text-lg font-semibold text-slate-800">Gestão de Apólices</h3>
+            <p className="text-slate-600">Gerencie e acompanhe todas as apólices de seguro</p>
           </div>
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Create Policy
+            Criar Apólice
           </Button>
         </div>
       </div>
@@ -71,16 +71,16 @@ export default function Policies() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                 <Input
-                  placeholder="Search policies..."
+                  placeholder="Buscar apólices..."
                   className="pl-10 w-64"
                 />
               </div>
               <Select>
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="All Types" />
+                  <SelectValue placeholder="Todos os Tipos" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="all">Todos os Tipos</SelectItem>
                   <SelectItem value="auto">Auto</SelectItem>
                   <SelectItem value="home">Home</SelectItem>
                   <SelectItem value="life">Life</SelectItem>

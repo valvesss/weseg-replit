@@ -39,17 +39,17 @@ export default function Contacts() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-slate-800">Contact Management</h3>
-            <p className="text-slate-600">Manage your client relationships and contact information</p>
+            <h3 className="text-lg font-semibold text-slate-800">Gestão de Contatos</h3>
+            <p className="text-slate-600">Gerencie seus relacionamentos com clientes e informações de contato</p>
           </div>
           <div className="flex space-x-3">
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
-              Export
+              Exportar
             </Button>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
-              Add Contact
+              Adicionar Contato
             </Button>
           </div>
         </div>

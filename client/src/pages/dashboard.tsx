@@ -138,26 +138,26 @@ export default function Dashboard() {
         <div>
           <Card>
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">Quick Actions</h3>
+              <h3 className="text-lg font-semibold text-slate-800 mb-4">Ações Rápidas</h3>
               <div className="space-y-3">
                 <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
                   <Plus className="text-primary w-5 h-5" />
-                  <span className="text-slate-700 font-medium">Add New Client</span>
+                  <span className="text-slate-700 font-medium">Adicionar Novo Cliente</span>
                 </button>
                 
                 <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
                   <Shield className="text-primary w-5 h-5" />
-                  <span className="text-slate-700 font-medium">Create Policy</span>
+                  <span className="text-slate-700 font-medium">Criar Apólice</span>
                 </button>
                 
                 <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
                   <FileText className="text-primary w-5 h-5" />
-                  <span className="text-slate-700 font-medium">Process Claim</span>
+                  <span className="text-slate-700 font-medium">Processar Sinistro</span>
                 </button>
                 
                 <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">
                   <Upload className="text-primary w-5 h-5" />
-                  <span className="text-slate-700 font-medium">Upload Document</span>
+                  <span className="text-slate-700 font-medium">Enviar Documento</span>
                 </button>
               </div>
             </CardContent>

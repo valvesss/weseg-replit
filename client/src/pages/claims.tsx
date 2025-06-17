@@ -19,11 +19,11 @@ const statusColors = {
 };
 
 const statusLabels = {
-  open: "Open",
-  in_review: "In Review",
-  approved: "Approved",
-  closed: "Closed",
-  denied: "Denied",
+  open: "Aberto",
+  in_review: "Em Análise",
+  approved: "Aprovado",
+  closed: "Fechado",
+  denied: "Negado",
 };
 
 export default function Claims() {
