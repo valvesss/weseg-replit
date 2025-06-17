@@ -9,8 +9,8 @@ export default function Landing() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Insurance Broker
-            <span className="text-blue-600"> Management Platform</span>
+            <span className="text-blue-600">WeSeg</span>
+            <span className="block text-3xl md:text-4xl mt-2">Insurance Broker Management Platform</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Streamline your insurance business with our comprehensive platform for managing clients, 
