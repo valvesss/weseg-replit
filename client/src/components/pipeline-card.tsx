@@ -17,12 +17,12 @@ const insuranceTypeColors = {
 
 export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: PipelineCardProps) {
   const premium = lead.annualPremium ? parseFloat(lead.annualPremium.toString()) : 0;
-  const daysAgo = Math.floor((Date.now() - new Date(lead.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+  const firstContactDate = new Date(lead.createdAt);
   
   return (
     <div
       className={cn(
-        "bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-move hover:shadow-md transition-shadow",
+        "bg-white p-3 rounded-lg shadow-sm border border-slate-200 cursor-move hover:shadow-md transition-shadow",
         isDragging && "opacity-50 transform rotate-1",
         lead.status === "qualified" && "border-blue-200",
         lead.status === "proposal" && "border-amber-200", 
@@ -32,27 +32,20 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       onDragStart={(e) => onDragStart(e, lead)}
       onDragEnd={onDragEnd}
     >
-      <div className="flex items-center justify-between mb-2">
-        <h5 className="font-medium text-slate-800">{lead.name}</h5>
-        <span className={cn(
-          "text-xs px-2 py-1 rounded-full",
-          insuranceTypeColors[lead.insuranceType as keyof typeof insuranceTypeColors] || "text-slate-600"
-        )}>
-          {lead.insuranceType}
-        </span>
-      </div>
+      <h5 className="font-semibold text-slate-800 mb-3">{lead.name}</h5>
       
-      {lead.notes && (
-        <p className="text-sm text-slate-600 mb-2 line-clamp-2">{lead.notes}</p>
-      )}
-      
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-green-600">
+      <div className="space-y-2">
+        <div className="text-lg font-bold text-green-600">
           {premium > 0 ? formatCurrency(premium) + "/year" : "Quote pending"}
-        </span>
-        <span className="text-xs text-slate-500">
-          {daysAgo === 0 ? "Today" : `${daysAgo} day${daysAgo > 1 ? "s" : ""} ago`}
-        </span>
+        </div>
+        
+        <div className="text-xs text-slate-500">
+          First contact: {firstContactDate.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+          })}
+        </div>
       </div>
     </div>
   );
