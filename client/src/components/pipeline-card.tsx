@@ -151,7 +151,7 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       </div>
       
       {/* Card Content */}
-      <div className="p-3">
+      <div className="p-2.5">
         <div className="space-y-2 text-sm">
           <div className="text-slate-700 font-medium uppercase text-xs tracking-wide">
             {lead.insuranceType}
