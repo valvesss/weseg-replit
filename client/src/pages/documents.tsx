@@ -75,14 +75,14 @@ export default function Documents() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/documents"] });
       toast({
-        title: "Success",
-        description: "Document uploaded successfully",
+        title: "Sucesso",
+        description: "Documento enviado com sucesso",
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to upload document",
+        title: "Erro",
+        description: "Falha ao enviar documento",
         variant: "destructive",
       });
     },
@@ -93,8 +93,8 @@ export default function Documents() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/documents"] });
       toast({
-        title: "Success",
-        description: "Document deleted successfully",
+        title: "Sucesso",
+        description: "Documento excluído com sucesso",
       });
     },
   });

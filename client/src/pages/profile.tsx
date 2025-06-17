@@ -142,8 +142,8 @@ export default function Profile() {
   return (
     <Layout currentPage="profile">
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800">My Profile</h3>
-        <p className="text-slate-600">Manage your broker profile and account settings</p>
+        <h3 className="text-lg font-semibold text-slate-800">Meu Perfil</h3>
+        <p className="text-slate-600">Gerencie seu perfil de corretor e configurações da conta</p>
       </div>
 
       <Form {...form}>
@@ -153,14 +153,14 @@ export default function Profile() {
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardContent className="p-6">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Personal Information</h4>
+                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Informações Pessoais</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name</FormLabel>
+                          <FormLabel>Nome</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -174,7 +174,7 @@ export default function Profile() {
                       name="lastName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name</FormLabel>
+                          <FormLabel>Sobrenome</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -188,7 +188,7 @@ export default function Profile() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel>Endereço de Email</FormLabel>
                           <FormControl>
                             <Input type="email" {...field} />
                           </FormControl>

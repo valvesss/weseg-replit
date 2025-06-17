@@ -81,10 +81,10 @@ export default function Policies() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os Tipos</SelectItem>
-                  <SelectItem value="auto">Auto</SelectItem>
-                  <SelectItem value="home">Home</SelectItem>
-                  <SelectItem value="life">Life</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="auto">Automóvel</SelectItem>
+                  <SelectItem value="home">Residencial</SelectItem>
+                  <SelectItem value="life">Vida</SelectItem>
+                  <SelectItem value="business">Empresarial</SelectItem>
                 </SelectContent>
               </Select>
               <Select>
