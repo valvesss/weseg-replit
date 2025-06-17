@@ -20,6 +20,10 @@ import {
 } from "@shared/schema";
 
 export interface IStorage {
+  // User operations (required for authentication)
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+
   // Contacts
   getContacts(): Promise<Contact[]>;
   getContact(id: number): Promise<Contact | undefined>;
