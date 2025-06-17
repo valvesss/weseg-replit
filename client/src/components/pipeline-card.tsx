@@ -153,8 +153,8 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
       {/* Card Content */}
       <div className="p-2.5">
         <div className="space-y-2 text-sm">
-          <div className="text-slate-700 font-medium uppercase text-xs tracking-wide">
-            {lead.insuranceType}
+          <div className="text-slate-700 font-medium text-xs tracking-wide">
+            {lead.insuranceType.charAt(0).toUpperCase() + lead.insuranceType.slice(1)}
           </div>
           
           {/* Contact Options */}
@@ -162,18 +162,11 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
             <div className="space-y-1 py-2">
               {/* Email Section */}
               <div className="flex items-center justify-between py-1">
-                <div className="flex items-center text-xs text-slate-600">
+                <div className="flex items-center text-xs text-slate-600 flex-1 mr-2">
                   <Mail className="w-3 h-3 mr-2 text-slate-500" />
-                  <span className="truncate max-w-[120px]" title={lead.email}>{lead.email}</span>
+                  <span className="truncate" title={lead.email}>{lead.email}</span>
                 </div>
-                <div className="flex items-center space-x-1">
-                  <button
-                    onClick={handleEmailClick}
-                    className="p-1 text-slate-500 hover:text-blue-600 transition-colors"
-                    title="Abrir email"
-                  >
-                    <Mail className="w-3 h-3" />
-                  </button>
+                <div className="flex items-center">
                   <button
                     onClick={handleCopyEmail}
                     className="p-1 text-slate-500 hover:text-slate-700 transition-colors"
@@ -192,13 +185,6 @@ export function PipelineCard({ lead, onDragStart, onDragEnd, isDragging }: Pipel
                     <span>{lead.phone}</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <button
-                      onClick={handlePhoneClick}
-                      className="p-1 text-slate-500 hover:text-green-600 transition-colors"
-                      title="Ligar"
-                    >
-                      <Phone className="w-3 h-3" />
-                    </button>
                     <button
                       onClick={handleWhatsAppClick}
                       className="p-1 text-slate-500 hover:text-green-600 transition-colors"
