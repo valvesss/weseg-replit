@@ -27,10 +27,12 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/forgot-password" component={ForgotPassword} />
       
+      {/* Landing page for unauthenticated users */}
+      <Route path="/" component={isAuthenticated ? Dashboard : Landing} />
+      
       {/* Protected routes */}
       {isAuthenticated ? (
         <>
-          <Route path="/" component={Dashboard} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/pipeline" component={Pipeline} />
           <Route path="/contacts" component={Contacts} />
@@ -41,15 +43,14 @@ function Router() {
         </>
       ) : (
         <>
-          {/* Redirect to login if not authenticated */}
-          <Route path="/" component={Login} />
-          <Route path="/dashboard" component={Login} />
-          <Route path="/pipeline" component={Login} />
-          <Route path="/contacts" component={Login} />
-          <Route path="/claims" component={Login} />
-          <Route path="/policies" component={Login} />
-          <Route path="/documents" component={Login} />
-          <Route path="/profile" component={Login} />
+          {/* Redirect to landing page if not authenticated */}
+          <Route path="/dashboard" component={Landing} />
+          <Route path="/pipeline" component={Landing} />
+          <Route path="/contacts" component={Landing} />
+          <Route path="/claims" component={Landing} />
+          <Route path="/policies" component={Landing} />
+          <Route path="/documents" component={Landing} />
+          <Route path="/profile" component={Landing} />
         </>
       )}
       
