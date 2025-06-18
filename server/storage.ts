@@ -71,6 +71,7 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  private users: Map<number, User> = new Map();
   private contacts: Map<number, Contact> = new Map();
   private pipelineLeads: Map<number, PipelineLead> = new Map();
   private policies: Map<number, Policy> = new Map();
@@ -81,6 +82,47 @@ export class MemStorage implements IStorage {
 
   constructor() {
     this.initializeWithSampleData();
+  }
+
+  // User operations
+  async getUser(id: string): Promise<User | undefined> {
+    return this.users.get(parseInt(id));
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    for (const user of this.users.values()) {
+      if (user.email === email) {
+        return user;
+      }
+    }
+    return undefined;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
+    const newUser: User = {
+      id: this.currentId++,
+      ...userData,
+      isEmailVerified: userData.isEmailVerified || false,
+      resetPasswordToken: null,
+      resetPasswordExpires: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(newUser.id, newUser);
+    return newUser;
+  }
+
+  async updateUser(id: number, userData: Partial<InsertUser>): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+
+    const updatedUser: User = {
+      ...user,
+      ...userData,
+      updatedAt: new Date(),
+    };
+    this.users.set(id, updatedUser);
+    return updatedUser;
   }
 
   private initializeWithSampleData() {

@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated, hashPassword, comparePassword, generateResetToken, sendResetPasswordEmail } from "./auth";
 import {
   insertContactSchema,
   insertPipelineLeadSchema,
@@ -9,9 +9,14 @@ import {
   insertClaimSchema,
   insertDocumentSchema,
   insertBrokerProfileSchema,
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from "@shared/schema";
 import multer from "multer";
 import path from "path";
+import passport from "passport";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -42,13 +47,132 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      const user = req.user;
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
+  });
+
+  // Login route
+  app.post('/api/auth/login', (req, res, next) => {
+    try {
+      const validatedData = loginSchema.parse(req.body);
+      
+      passport.authenticate('local', (err: any, user: any, info: any) => {
+        if (err) {
+          return res.status(500).json({ message: 'Authentication error' });
+        }
+        if (!user) {
+          return res.status(401).json({ message: info?.message || 'Invalid credentials' });
+        }
+        
+        req.logIn(user, (err) => {
+          if (err) {
+            return res.status(500).json({ message: 'Login error' });
+          }
+          return res.json({ user, message: 'Login successful' });
+        });
+      })(req, res, next);
+    } catch (error) {
+      res.status(400).json({ message: 'Invalid request data' });
+    }
+  });
+
+  // Register route
+  app.post('/api/auth/register', async (req, res) => {
+    try {
+      const validatedData = registerSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(validatedData.email);
+      if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
+      }
+
+      // Hash password and create user
+      const hashedPassword = await hashPassword(validatedData.password);
+      const user = await storage.createUser({
+        ...validatedData,
+        password: hashedPassword,
+        isEmailVerified: false,
+      });
+
+      // Remove password from response
+      const { password, ...userResponse } = user;
+      res.status(201).json({ user: userResponse, message: 'User created successfully' });
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.status(400).json({ message: 'Registration failed' });
+    }
+  });
+
+  // Forgot password route
+  app.post('/api/auth/forgot-password', async (req, res) => {
+    try {
+      const validatedData = forgotPasswordSchema.parse(req.body);
+      
+      const user = await storage.getUserByEmail(validatedData.email);
+      if (!user) {
+        // Don't reveal whether email exists
+        return res.json({ message: 'If an account with that email exists, a reset link has been sent.' });
+      }
+
+      const resetToken = generateResetToken();
+      const resetExpires = new Date(Date.now() + 3600000); // 1 hour
+
+      await storage.updateUser(user.id, {
+        resetPasswordToken: resetToken,
+        resetPasswordExpires: resetExpires,
+      });
+
+      try {
+        await sendResetPasswordEmail(user.email, resetToken);
+        res.json({ message: 'If an account with that email exists, a reset link has been sent.' });
+      } catch (emailError) {
+        console.error("Email sending error:", emailError);
+        res.status(500).json({ message: 'Failed to send reset email' });
+      }
+    } catch (error) {
+      res.status(400).json({ message: 'Invalid request data' });
+    }
+  });
+
+  // Reset password route
+  app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+      const validatedData = resetPasswordSchema.parse(req.body);
+      
+      const user = await storage.getUserByEmail(req.body.email);
+      if (!user || 
+          user.resetPasswordToken !== validatedData.token || 
+          !user.resetPasswordExpires || 
+          user.resetPasswordExpires < new Date()) {
+        return res.status(400).json({ message: 'Invalid or expired reset token' });
+      }
+
+      const hashedPassword = await hashPassword(validatedData.password);
+      await storage.updateUser(user.id, {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      });
+
+      res.json({ message: 'Password reset successful' });
+    } catch (error) {
+      res.status(400).json({ message: 'Password reset failed' });
+    }
+  });
+
+  // Logout route
+  app.post('/api/auth/logout', (req, res) => {
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Logout error' });
+      }
+      res.json({ message: 'Logout successful' });
+    });
   });
 
   // Contacts routes
