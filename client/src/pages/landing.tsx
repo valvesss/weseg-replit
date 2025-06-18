@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Users, FileText, TrendingUp, LogIn } from "lucide-react";
+import { Shield, Users, FileText, TrendingUp, LogIn, UserPlus } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Landing() {
   return (
@@ -16,14 +17,27 @@ export default function Landing() {
             Otimize seu negócio de seguros com nossa plataforma abrangente para gerenciar clientes, 
             apólices, sinistros e leads de vendas em um painel poderoso e integrado.
           </p>
-          <Button 
-            onClick={() => window.location.href = '/api/login'}
-            size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
-          >
-            <LogIn className="mr-2 h-5 w-5" />
-            Faça Login para Começar
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/login">
+              <Button 
+                size="lg" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+              >
+                <LogIn className="mr-2 h-5 w-5" />
+                Faça Login
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg"
+              >
+                <UserPlus className="mr-2 h-5 w-5" />
+                Criar Conta
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Features Grid */}

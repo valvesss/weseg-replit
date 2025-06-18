@@ -73,8 +73,22 @@ export function Sidebar({ currentPage }: SidebarProps) {
     queryKey: ["/api/broker-profile"],
   });
 
-  const handleLogout = () => {
-    window.location.href = "/api/logout";
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        // Clear any cached user data and redirect to login
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Fallback: redirect to login anyway
+      window.location.href = "/login";
+    }
   };
 
   // Close menu when clicking outside

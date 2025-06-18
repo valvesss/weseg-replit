@@ -48,7 +48,21 @@ export function Header({ currentPage }: HeaderProps) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => window.location.href = '/api/logout'}
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/auth/logout', {
+                  method: 'POST',
+                  credentials: 'include',
+                });
+                
+                if (response.ok) {
+                  window.location.href = "/login";
+                }
+              } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = "/login";
+              }
+            }}
             className="ml-4"
           >
             <LogOut className="w-4 h-4 mr-2" />
