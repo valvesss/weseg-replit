@@ -156,17 +156,7 @@ export function Sidebar({ currentPage }: SidebarProps) {
               
               {/* Dropdown Menu */}
               {menuOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50">
-                  <Link href="/profile">
-                    <button 
-                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <User className="w-4 h-4" />
-                      <span>Meu Perfil</span>
-                    </button>
-                  </Link>
-                  <div className="border-t border-slate-100 my-1"></div>
+                <div className="absolute bottom-full right-0 mb-2 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50">
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
