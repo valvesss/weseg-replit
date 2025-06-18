@@ -30,7 +30,12 @@ export default function Profile() {
     queryKey: ["/api/broker-profile"],
   });
 
-  const { data: stats } = useQuery({
+  const { data: stats } = useQuery<{
+    totalClients: number;
+    activePolicies: number;
+    pendingClaims: number;
+    monthlyRevenue: number;
+  }>({
     queryKey: ["/api/dashboard/stats"],
   });
 
@@ -218,7 +223,12 @@ export default function Profile() {
                         <FormItem className="md:col-span-2">
                           <FormLabel>Endereço Comercial</FormLabel>
                           <FormControl>
-                            <Textarea {...field} rows={3} />
+                            <Textarea 
+                              {...field} 
+                              value={field.value || ""} 
+                              onChange={(e) => field.onChange(e.target.value || null)}
+                              rows={3} 
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -339,12 +349,12 @@ export default function Profile() {
                     <div className="flex items-center justify-between">
                       <span className="text-slate-600">Receita deste Mês</span>
                       <span className="font-semibold text-green-600">
-                        {stats ? formatCurrency(stats.monthlyRevenue) : "$0"}
+                        {stats ? formatCurrency(stats.monthlyRevenue) : "R$ 0"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                       <span className="text-slate-600">Membro desde</span>
-                      <span className="font-semibold text-slate-800">Jan 2020</span>
+                      <span className="font-semibold text-slate-800">Jan 2024</span>
                     </div>
                   </div>
                 </CardContent>
