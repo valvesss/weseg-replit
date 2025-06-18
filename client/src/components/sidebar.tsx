@@ -109,23 +109,35 @@ export function Sidebar({ currentPage }: SidebarProps) {
 
       {/* User Info and Logout */}
       {profile && (
-        <div className="p-3 border-t border-slate-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 min-w-0 flex-1">
-              <div className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0">
+        <div className="p-3 border-t border-slate-200 bg-gradient-to-r from-slate-50 to-white">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start space-x-2 min-w-0 flex-1">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 text-white rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 shadow-sm">
                 {getInitials(profile.firstName, profile.lastName)}
               </div>
-              <div className="min-w-0 flex-1">
-                <div className="font-medium truncate text-xs">{profile.firstName} {profile.lastName}</div>
-                <div className="text-xs text-slate-500 truncate">{profile.email}</div>
+              <div className="min-w-0 flex-1 pt-0.5">
+                <div className="font-medium text-xs text-slate-800 leading-tight mb-0.5">
+                  {profile.firstName} {profile.lastName}
+                </div>
+                <div 
+                  className="text-xs text-slate-500 leading-tight break-all"
+                  style={{ 
+                    wordBreak: 'break-all',
+                    lineHeight: '1.2',
+                    fontSize: '10px'
+                  }}
+                  title={profile.email}
+                >
+                  {profile.email}
+                </div>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center justify-center p-1.5 rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors flex-shrink-0 ml-2"
-              title="Sair"
+              className="flex items-center justify-center p-1.5 rounded-md text-slate-500 hover:bg-white hover:text-red-600 hover:shadow-sm transition-all duration-200 flex-shrink-0 border border-transparent hover:border-slate-200"
+              title="Sair da conta"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
