@@ -9,9 +9,11 @@ import {
   User,
   Kanban,
   LogOut,
+  MoreVertical,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { BrokerProfile } from "@shared/schema";
+import { useState, useRef, useEffect } from "react";
 
 interface SidebarProps {
   currentPage: string;
@@ -64,6 +66,8 @@ const navigationItems = [
 
 export function Sidebar({ currentPage }: SidebarProps) {
   const [location] = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const { data: profile } = useQuery<BrokerProfile>({
     queryKey: ["/api/broker-profile"],
@@ -72,6 +76,20 @@ export function Sidebar({ currentPage }: SidebarProps) {
   const handleLogout = () => {
     window.location.href = "/api/logout";
   };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <aside className="w-56 bg-white shadow-lg border-r border-slate-200 fixed h-full z-10 flex flex-col">
@@ -107,38 +125,58 @@ export function Sidebar({ currentPage }: SidebarProps) {
         })}
       </nav>
 
-      {/* User Info and Logout */}
+      {/* User Info and Menu */}
       {profile && (
-        <div className="p-3 border-t border-slate-200 bg-gradient-to-r from-slate-50 to-white">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex items-start space-x-2 min-w-0 flex-1">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 text-white rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 shadow-sm">
-                {getInitials(profile.firstName, profile.lastName)}
+        <div className="p-3 border-t border-slate-200 bg-gradient-to-r from-slate-50 to-white relative">
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="font-medium text-xs text-slate-800 leading-tight mb-0.5">
+                {profile.firstName} {profile.lastName}
               </div>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <div className="font-medium text-xs text-slate-800 leading-tight mb-0.5">
-                  {profile.firstName} {profile.lastName}
-                </div>
-                <div 
-                  className="text-xs text-slate-500 leading-tight break-all"
-                  style={{ 
-                    wordBreak: 'break-all',
-                    lineHeight: '1.2',
-                    fontSize: '10px'
-                  }}
-                  title={profile.email}
-                >
-                  {profile.email}
-                </div>
+              <div 
+                className="text-xs text-slate-500 leading-tight break-all"
+                style={{ 
+                  wordBreak: 'break-all',
+                  lineHeight: '1.2',
+                  fontSize: '10px'
+                }}
+                title={profile.email}
+              >
+                {profile.email}
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center justify-center p-1.5 rounded-md text-slate-500 hover:bg-white hover:text-red-600 hover:shadow-sm transition-all duration-200 flex-shrink-0 border border-transparent hover:border-slate-200"
-              title="Sair da conta"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-            </button>
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="flex items-center justify-center p-1.5 rounded-md text-slate-500 hover:bg-white hover:text-slate-700 hover:shadow-sm transition-all duration-200 flex-shrink-0 border border-transparent hover:border-slate-200"
+                title="Menu"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </button>
+              
+              {/* Dropdown Menu */}
+              {menuOpen && (
+                <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50">
+                  <Link href="/profile">
+                    <button 
+                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <User className="w-4 h-4" />
+                      <span>Meu Perfil</span>
+                    </button>
+                  </Link>
+                  <div className="border-t border-slate-100 my-1"></div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sair da Conta</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
