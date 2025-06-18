@@ -61,14 +61,14 @@ export default function Profile() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/broker-profile"] });
       toast({
-        title: "Success",
-        description: "Profile updated successfully",
+        title: "Sucesso",
+        description: "Perfil atualizado com sucesso",
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to update profile",
+        title: "Erro",
+        description: "Falha ao atualizar perfil",
         variant: "destructive",
       });
     },
@@ -301,49 +301,49 @@ export default function Profile() {
             <div className="space-y-6">
               <Card>
                 <CardContent className="p-6">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Profile Picture</h4>
+                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Foto do Perfil</h4>
                   <div className="flex flex-col items-center">
                     <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-4">
                       <span className="text-white text-2xl font-medium">{userInitials}</span>
                     </div>
                     <Button variant="outline" className="mb-2">
-                      Change Photo
+                      Alterar Foto
                     </Button>
-                    <p className="text-sm text-slate-600 text-center">JPG, PNG up to 2MB</p>
+                    <p className="text-sm text-slate-600 text-center">JPG, PNG até 2MB</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardContent className="p-6">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Account Statistics</h4>
+                  <h4 className="text-lg font-semibold text-slate-800 mb-6">Estatísticas da Conta</h4>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-600">Total Clients</span>
+                      <span className="text-slate-600">Total de Clientes</span>
                       <span className="font-semibold text-slate-800">
                         {stats?.totalClients || 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-600">Active Policies</span>
+                      <span className="text-slate-600">Apólices Ativas</span>
                       <span className="font-semibold text-slate-800">
                         {stats?.activePolicies || 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-600">Pending Claims</span>
+                      <span className="text-slate-600">Sinistros Pendentes</span>
                       <span className="font-semibold text-slate-800">
                         {stats?.pendingClaims || 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-600">This Month Revenue</span>
+                      <span className="text-slate-600">Receita deste Mês</span>
                       <span className="font-semibold text-green-600">
                         {stats ? formatCurrency(stats.monthlyRevenue) : "$0"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                      <span className="text-slate-600">Member Since</span>
+                      <span className="text-slate-600">Membro desde</span>
                       <span className="font-semibold text-slate-800">Jan 2020</span>
                     </div>
                   </div>

@@ -8,6 +8,7 @@ import {
   FolderOpen,
   User,
   Kanban,
+  LogOut,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { BrokerProfile } from "@shared/schema";
@@ -68,8 +69,9 @@ export function Sidebar({ currentPage }: SidebarProps) {
     queryKey: ["/api/broker-profile"],
   });
 
-  // Filter out profile from main navigation
-  const mainNavigationItems = navigationItems.filter(item => item.key !== "profile");
+  const handleLogout = () => {
+    window.location.href = "/api/logout";
+  };
 
   return (
     <aside className="w-56 bg-white shadow-lg border-r border-slate-200 fixed h-full z-10 flex flex-col">
@@ -83,7 +85,7 @@ export function Sidebar({ currentPage }: SidebarProps) {
       </div>
       
       <nav className="p-4 space-y-2 flex-1">
-        {mainNavigationItems.map((item) => {
+        {navigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = location === item.href;
           
@@ -105,25 +107,25 @@ export function Sidebar({ currentPage }: SidebarProps) {
         })}
       </nav>
 
-      {/* Profile Section at Bottom */}
+      {/* User Info and Logout */}
       {profile && (
-        <div className="p-4 border-t border-slate-200">
-          <Link href="/profile">
-            <button className={cn(
-              "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors",
-              location === "/profile"
-                ? "bg-primary/10 text-primary border border-primary/20"
-                : "text-slate-700 hover:bg-slate-100"
-            )}>
-              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold">
-                {getInitials(profile.firstName, profile.lastName)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-medium truncate">{profile.firstName} {profile.lastName}</div>
-                <div className="text-xs text-slate-500 truncate">{profile.email}</div>
-              </div>
-            </button>
-          </Link>
+        <div className="p-4 border-t border-slate-200 space-y-2">
+          <div className="flex items-center space-x-3 px-3 py-2">
+            <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold">
+              {getInitials(profile.firstName, profile.lastName)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-medium truncate text-sm">{profile.firstName} {profile.lastName}</div>
+              <div className="text-xs text-slate-500 truncate">{profile.email}</div>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors text-slate-700 hover:bg-slate-100"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="text-sm">Sair</span>
+          </button>
         </div>
       )}
     </aside>
