@@ -41,7 +41,8 @@ export default function Login() {
       }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      await refreshUser();
       setLocation('/dashboard');
     },
   });

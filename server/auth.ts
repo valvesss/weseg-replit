@@ -111,8 +111,11 @@ export async function setupAuth(app: Express) {
     done(null, user.id);
   });
 
-  passport.deserializeUser(async (id: number, done) => {
+  passport.deserializeUser(async (id: any, done) => {
     try {
+      if (!id || isNaN(id)) {
+        return done(null, false);
+      }
       const user = await storage.getUser(id.toString());
       done(null, user);
     } catch (error) {
