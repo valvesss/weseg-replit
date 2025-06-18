@@ -144,8 +144,6 @@ export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  resetPasswordToken: true,
-  resetPasswordExpires: true,
 });
 
 export const loginSchema = z.object({

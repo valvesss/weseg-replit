@@ -29,17 +29,19 @@ export default function Login() {
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
-      const response = await apiRequest('/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
       return response.json();
     },
-    onSuccess: async () => {
-      await refreshUser();
+    onSuccess: () => {
       setLocation('/dashboard');
     },
   });
